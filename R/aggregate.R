@@ -63,6 +63,7 @@ truethy <- function(x, trueth = "Ja") {
   }
   if (is.numeric(x)) {
     x[is.na(x)] <- 0
+    if (!all(x %in% 0:1)) stop("none 0,1 values in numeric logical vector")
     return(x == 1)
   }
 }
@@ -89,4 +90,118 @@ year_month <- function(date) {
     "0", mnth[stringr::str_length(mnth) == 1]
   )
   return(paste0(yr, "-", mnth))
+}
+
+#' mean_sd
+#'
+#' @param x Numeric vector 
+#' @param remove_na Should NAs be removed?
+#' @param digits The number of decimal places to include
+#'
+#' @export
+#'
+#' @examples
+#' mean_sd(1:10)
+#'
+#' @returns A string of form mean (sd)
+mean_sd <- function(x, remove_na = TRUE, digits = 1) {
+    if (!is.numeric(x)) stop("x must be numeric")
+    m <- format(round(mean(x, na.rm = remove_na), digits = digits), nsmall = digits)
+    sdev <- format(round(sd(x, na.rm = remove_na), digits = digits), nsmall = digits)
+    m_sd <- glue::glue("{m} ({sdev})")
+    return(m_sd)
+}
+#' median_iqr
+#'
+#' @param x Numeric vector 
+#' @param remove_na Should NAs be removed?
+#' @param digits The number of decimal places to include
+#'
+#' @export
+#'
+#' @examples
+#' median_iqr(1:10)
+#'
+#' @returns A string of form median (iqr)
+median_iqr <- function(x, remove_na = TRUE, digits = 1) {
+    if (!is.numeric(x)) stop("x must be numeric")
+    m <- format(round(median(x, na.rm = remove_na), digits = digits), nsmall = digits)
+    quant_025_075 <- format(round(quantile(x, na.rm = remove_na, probs = c(0.25, 0.75)), digits = digits), nsmall = digits)
+    m_iqr <- glue("{m} ({quant_025_075[1]}-{quant_025_075[2]})")
+    return(m_iqr)
+}
+
+#' n_per
+#'
+#' @param x Numeric or logical vector of form 1/0 or TRUE/FALSE
+#' @param remove_na Should NAs be removed?
+#'
+#' @export
+#'
+#' @examples
+#' n_per(rep(1,3), rep(0, 3))
+#'
+#' @returns A string of form count (%)
+n_per <- function(x, remove_na = FALSE) {
+    # Remove na or set them to false
+    if (is.numeric(x)) {
+        # TODO make sure it is binary
+        valid_values <- c(NA, 1, 0)
+        unique_values <- unique(x)
+        if (any(!unique_values %in% valid_values)) {
+            stop(glue("This is not a binary variable. Contains: {pcollapse(unique_values)}"))
+        }
+        x <- x == 1
+    }
+
+    if (!is.logical(x)) {
+        stop("x must be logical or binary numeric variable (1/0)")
+    }
+
+    # Handle NA
+    if (remove_na) {
+        print(glue("removing missing from variable {scales::percent(mean(is.na(x)))}"))
+        x <- x[!is.na(x)]
+    } else {
+        # Set the missing to FALSE
+        x[is.na(x)] <- FALSE
+    }
+
+    # Calculate prop and n
+    count <- sum(x)
+    prop <- mean(x)
+    perc <- scales::percent(prop)
+
+    res <- glue("{count} ({perc})")
+
+    return(res)
+}
+#' roundn
+#'
+#' @param x A float value to round and format
+#' @param dig Number of digits to round to
+#'
+#' @export
+#'
+#' @examples
+#' roundn(1.100100010, dig = 3)
+#' @returns 
+roundn <- function(x, dig = 2) {
+    format(round(x, digits = dig), nsmall = dig)
+}
+#' x_ci
+#'
+#' @param x A centric measure
+#' @param cil Lower confidence value
+#' @param ciu Upper confidence value
+#' @param dig Number of digits to round to
+#'
+#' @examples
+#' x_ci(1.0101, 0.500, 1.353, dig = 2) 
+#'
+#' @returns 
+#'
+#' @export
+x_ci <- function(x, cil, ciu, dig = 1) {
+    paste0(roundn(x, dig), " (", roundn(cil, dig), "-", roundn(ciu, dig), ")")
 }
