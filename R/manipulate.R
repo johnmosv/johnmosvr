@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-#' cat_numeric(1:10, cutoffs = c(2.5, 50, 7.5, 10), stop = 10)
+#' cat_numeric(1:10, cutoffs = c(2.5, 50, 7.5, 10), stop = 11)
 #'
 #' @returns A factor with categorized values
 cat_numeric <- function(x, cutoffs = c(6, 18, 41, 66), start = -1, stop = 1000) { #nolint
@@ -36,7 +36,7 @@ convert_idate_to_date <- function(data) {
     }
     any_idate <- any(unlist(lapply(data, is_idate)), na.rm = TRUE)
     if (any_idate) {
-        data <- dplyr::mutate(data, dplyr::across(dplyr::where(is_idate), lubridate::ymd)) #nolint
+        data <- dplyr::mutate(data, dplyr::across(tidyselect::where(is_idate), lubridate::ymd)) #nolint
     }
     return(data)
 }
@@ -51,7 +51,7 @@ convert_idate_to_date <- function(data) {
 convert_sas_dates_to_date <- function(data) {
     is_sas_date <- function(x) {
         if ("integer" %in% class(x)) {
-            it_is <- median(stringr::str_length(x[!is.na(x)]), na.rm = TRUE) %in% 4:5 #nolint
+            it_is <- stats::median(stringr::str_length(x[!is.na(x)]), na.rm = TRUE) %in% 4:5 #nolint
             return(it_is)
         }
         return(FALSE)
@@ -71,7 +71,7 @@ convert_sas_dates_to_date <- function(data) {
 
 #' simplify_colnames: Helper to remove non-ascii and weird characters
 #'
-#' @param data
+#' @param data Data.frame which colnames to change
 #' @export
 #' @examples
 #' simplify_colnames(iris)

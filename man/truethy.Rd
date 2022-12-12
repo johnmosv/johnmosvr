@@ -7,7 +7,7 @@
 truethy(x, trueth = "Ja")
 }
 \arguments{
-\item{x}{A logical, character or numeric vector. If character, use trueth to indicate TRUE value}
+\item{x}{A logical, character or numeric vector. If character, use trueth to indicate TRUE value #nolint}
 
 \item{trueth}{Optional, a string indicating the TRUE value.}
 }

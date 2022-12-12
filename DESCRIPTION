@@ -19,9 +19,13 @@ Imports:
     here,
     htmlwidgets,
     janitor,
+    knitr,
     lubridate,
+    magrittr,
     rlang,
     scales,
+    stats,
     stringr,
     tidyr,
+    tidyselect,
     usethis

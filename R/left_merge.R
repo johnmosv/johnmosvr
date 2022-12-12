@@ -7,9 +7,6 @@
 #'
 #' @export
 #'
-#' @examples
-#' left_merge(iris, iris, id_vars = "Species)
-#'
 #' @return A left joined table where duplicated columns are removed.
 left_merge <- function(x, y, by = NULL, id_vars = "lopnr") {
     nrow_x <- nrow(x)

@@ -1,8 +1,7 @@
-test_that("transpose_aggreate_dt", {
-  x <- data.table::as.data.table(iris)
-  table_aggregate <- x[, .N, by = "Species"]
+test_that("transpose_aggreated_dt", {
+  table_aggregate <- data.table::data.table(species = letters[1:3], N = 1:3)
   n_columns <- ncol(transpose_aggregated_dt(table_aggregate))
-  # the uniqe values of species + N
-  expect_equal(n_columns, length(unique(iris$Species)) + 1)
+  # When transposed the number of rows = ncol
+  expect_equal(n_columns, nrow(table_aggregate))
 
 })

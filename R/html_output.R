@@ -2,19 +2,19 @@
 #'
 #' @param data Table to present
 #' @param col_names New column names to be used in table
-#' @param first_colname
-#' @param title_row_names
+#' @param first_colname A character vector with new colnames
+#' @param title_row_names Should first row be formatted?
 #' @param title_col_names Should colnames be formatted?
 #' @param row_groups Should first columns be grouped?
 #' @param alignment Alignment of cells c("dt-center", "dt-right", "dt-left")
-#' @param align_targets Numeric vector containing columns positions to 
-#` apply alignment to #noline
+#' @param align_targets Numeric vector containing columns positions to
+#` apply alignment to
 #' @param page_length Number of rows per page
 #' @param class Classes to apply. Defaults to "compact stripe"
 #' @param row_callback Row callback to apply.
 #` Default to changing the color of every other row.
-#' @param widht Width as proportion of parent div. Based on ncol bby default
-#' @param ...Additional variables to pass to datatable::DT
+#' @param width Width as proportion of parent div. Based on ncol bby default
+#' @param ... Additional variables to pass to datatable::DT
 #'
 #' @returns An html table
 #'
@@ -31,7 +31,7 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
   }
 
   if (title_col_names) {
-    col_names <- stringr::str_to_title(stringr::str_replace_all(col_names, "_", " "))
+    col_names <- stringr::str_to_title(stringr::str_replace_all(col_names, "_", " ")) #nolint
   }
 
   if (row_groups) {
@@ -132,7 +132,7 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
     ),
     ...
   ) 
-  return_table <- DT::formatStyle(return_table, columns = 1, color = "black", fontWeight = "bold")
+  return_table <- DT::formatStyle(return_table, columns = 1, color = "black", fontWeight = "bold") #nolint
 
   if ("percent" %in% colnames(data)) {
     return_table <- DT::formatPercentage(return_table, "percent")
@@ -146,8 +146,9 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
 #' colorize_span
 #'
 #' @param text Text
+#' @param color Color of the output. Hex or named.
 #'
-#' @returns Returns an <span> tag with a color or Latex colored text
+#' @returns Returns an span tag with a color or Latex colored text
 #'
 #' @export
 colorize_span <- function(text, color = "red") {
@@ -156,14 +157,14 @@ colorize_span <- function(text, color = "red") {
     } else if (knitr::is_html_output()) {
         sprintf("<span style='color: %s;'>%s</span>", color, text)
     } else {
-        x
+        text
     }
 }
 #' tabyl_dt: Call table_dt after running janitor::tabyl() of data
 #'
 #' @param data data.frame to be tabyled
-#' @param var1
-#' @param var2
+#' @param var1 First var to tabulate over
+#' @param var2 Second, optional, var to tabulate over
 #' @param ... Additional arguments passed to table_dt
 #'
 #' @returns Tabyl output or table_dt output
@@ -171,7 +172,7 @@ colorize_span <- function(text, color = "red") {
 #' @export
 tabyl_dt <- function(data, var1, var2 = NULL, ...) {
     res <- janitor::tabyl(data, {{ var1 }})
-    if (!is.null(expr({{ var2 }}))) {
+    if (!is.null(rlang::expr({{ var2 }}))) {
         res <- janitor::tabyl(data, {{ var1 }}, {{ var2 }})
     }
     if (knitr::is_html_output()) {
