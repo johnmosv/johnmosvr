@@ -2,6 +2,7 @@
 
 export("%>%")
 export(cat_numeric)
+export(ci_mean)
 export(colorize_span)
 export(convert_idate_to_date)
 export(convert_sas_dates_to_date)
