@@ -25,7 +25,7 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
                      page_length = 20, class = NULL, row_callback = NULL, width = NULL, ...) { # nolint
 
   if (!knitr::is_html_output()) {
-    return(print(data, n = Inf))
+    return(print(tibble::as_tibble(data), n = Inf))
   }
   data <- dplyr::ungroup(data)
   dom_settings <- "tB"
