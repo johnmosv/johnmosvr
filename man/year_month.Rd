@@ -16,6 +16,6 @@ A string of form YYYY-MM
 year_month
 }
 \examples{
-year_month(as.Date("2020-01-01")) 
+year_month(as.Date("2020-01-01"))
 
 }

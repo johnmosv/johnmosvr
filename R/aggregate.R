@@ -98,6 +98,7 @@ year_month <- function(date) {
 #' @param remove_na Should NAs be removed?
 #' @param digits The number of decimal places to include
 #' @param big_mark = "," The mark to use for big numbers
+#' @param trim Should whitespace be trimmed, defualt TRUE
 #' @param ... Additional arguments passed to format
 #'
 #' @export
@@ -106,10 +107,14 @@ year_month <- function(date) {
 #' mean_sd(1:10)
 #'
 #' @returns A string of form mean (sd)
-mean_sd <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
+mean_sd <- function(x, remove_na = TRUE, digits = 1, big_mark = " ", trim = TRUE, ...) {
   if (!is.numeric(x)) stop("x must be numeric")
   m <- format(round(mean(x, na.rm = remove_na), digits = digits), nsmall = digits, big.mark = big_mark, ...)
   sdev <- format(round(stats::sd(x, na.rm = remove_na), digits = digits), nsmall = digits, big.mark = big_mark, ...)
+  if (trim) {
+    m <- stringr::str_trim(m)
+    sdev <- stringr::str_trim(sdev)
+  }
   m_sd <- glue::glue("{m} ({sdev})")
   m <- sddev <- NULL
   return(m_sd)
@@ -120,6 +125,7 @@ mean_sd <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
 #' @param remove_na Should NAs be removed?
 #' @param digits The number of decimal places to include
 #' @param big_mark = "," The mark to use for big numbers
+#' @param trim Should whitespace be trimmed, defualt TRUE
 #' @param ... Additional arguments passed to format
 #'
 #' @export
@@ -128,10 +134,15 @@ mean_sd <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
 #' median_iqr(1:10)
 #'
 #' @returns A string of form median (iqr)
-median_iqr <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
+median_iqr <- function(x, remove_na = TRUE, digits = 1, big_mark = " ", trim = TRUE, ...) {
   if (!is.numeric(x)) stop("x must be numeric")
   m <- format(round(stats::median(x, na.rm = remove_na), digits = digits), nsmall = digits, big.mark = big_mark, ...)
   quant_025_075 <- format(round(stats::quantile(x, na.rm = remove_na, probs = c(0.25, 0.75)), digits = digits), nsmall = digits, big.mark = big_mark, ...)
+  if (trim) {
+    m <- stringr::str_trim(m)
+    quant_025_075 <- stringr::str_trim(quant_025_075)
+  }
+
   m_iqr <- glue::glue("{m} ({quant_025_075[1]}-{quant_025_075[2]})")
   m <- quant_025_075 <- NULL
   return(m_iqr)
@@ -141,6 +152,7 @@ median_iqr <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
 #'
 #' @param x Numeric or logical vector of form 1/0 or TRUE/FALSE
 #' @param remove_na Should NAs be removed?
+#' @param ... Additional arguments passed to scales::percent
 #'
 #' @export
 #'
@@ -148,7 +160,7 @@ median_iqr <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
 #' n_per(c(rep(1, 3), rep(0, 3)))
 #'
 #' @returns A string of form count (%)
-n_per <- function(x, remove_na = FALSE) {
+n_per <- function(x, remove_na = FALSE, ...) {
   # Remove na or set them to false
   if (is.numeric(x)) {
     # TODO make sure it is binary
@@ -176,7 +188,7 @@ n_per <- function(x, remove_na = FALSE) {
   # Calculate prop and n
   count <- sum(x)
   prop <- mean(x)
-  perc <- scales::percent(prop)
+  perc <- scales::percent(prop, ...)
 
   res <- glue::glue("{count} ({perc})")
   count <- perc <- NULL

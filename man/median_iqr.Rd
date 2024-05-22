@@ -4,7 +4,7 @@
 \alias{median_iqr}
 \title{median_iqr}
 \usage{
-median_iqr(x, remove_na = TRUE, digits = 1)
+median_iqr(x, remove_na = TRUE, digits = 1, big_mark = " ", trim = TRUE, ...)
 }
 \arguments{
 \item{x}{Numeric vector}
@@ -12,6 +12,12 @@ median_iqr(x, remove_na = TRUE, digits = 1)
 \item{remove_na}{Should NAs be removed?}
 
 \item{digits}{The number of decimal places to include}
+
+\item{big_mark}{= "," The mark to use for big numbers}
+
+\item{trim}{Should whitespace be trimmed, defualt TRUE}
+
+\item{...}{Additional arguments passed to format}
 }
 \value{
 A string of form median (iqr)

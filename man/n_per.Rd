@@ -18,6 +18,6 @@ A string of form count (\%)
 n_per
 }
 \examples{
-n_per(c(rep(1,3), rep(0, 3)))
+n_per(c(rep(1, 3), rep(0, 3)))
 
 }

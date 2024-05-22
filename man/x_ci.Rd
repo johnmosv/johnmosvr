@@ -22,6 +22,6 @@ A string for form x (cil-ciu)
 x_ci
 }
 \examples{
-x_ci(1.0101, 0.500, 1.353, dig = 2) 
+x_ci(1.0101, 0.500, 1.353, dig = 2)
 
 }
