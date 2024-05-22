@@ -75,7 +75,7 @@ truethy <- function(x, trueth = "Ja") {
 #' @export
 #'
 #' @examples
-#' year_month(as.Date("2020-01-01")) 
+#' year_month(as.Date("2020-01-01"))
 #'
 #' @returns A string of form YYYY-MM
 year_month <- function(date) {
@@ -94,9 +94,10 @@ year_month <- function(date) {
 
 #' mean_sd
 #'
-#' @param x Numeric vector 
+#' @param x Numeric vector
 #' @param remove_na Should NAs be removed?
 #' @param digits The number of decimal places to include
+#' @param ... Additional arguments passed to format
 #'
 #' @export
 #'
@@ -104,19 +105,20 @@ year_month <- function(date) {
 #' mean_sd(1:10)
 #'
 #' @returns A string of form mean (sd)
-mean_sd <- function(x, remove_na = TRUE, digits = 1) {
-    if (!is.numeric(x)) stop("x must be numeric")
-    m <- format(round(mean(x, na.rm = remove_na), digits = digits), nsmall = digits)
-    sdev <- format(round(stats::sd(x, na.rm = remove_na), digits = digits), nsmall = digits)
-    m_sd <- glue::glue("{m} ({sdev})")
-    m <- sddev <- NULL
-    return(m_sd)
+mean_sd <- function(x, remove_na = TRUE, digits = 1, ...) {
+  if (!is.numeric(x)) stop("x must be numeric")
+  m <- format(round(mean(x, na.rm = remove_na), digits = digits), nsmall = digits)
+  sdev <- format(round(stats::sd(x, na.rm = remove_na), digits = digits), nsmall = digits, ...)
+  m_sd <- glue::glue("{m} ({sdev})")
+  m <- sddev <- NULL
+  return(m_sd)
 }
 #' median_iqr
 #'
-#' @param x Numeric vector 
+#' @param x Numeric vector
 #' @param remove_na Should NAs be removed?
 #' @param digits The number of decimal places to include
+#' @param ... Additional arguments passed to format
 #'
 #' @export
 #'
@@ -124,13 +126,13 @@ mean_sd <- function(x, remove_na = TRUE, digits = 1) {
 #' median_iqr(1:10)
 #'
 #' @returns A string of form median (iqr)
-median_iqr <- function(x, remove_na = TRUE, digits = 1) {
-    if (!is.numeric(x)) stop("x must be numeric")
-    m <- format(round(stats::median(x, na.rm = remove_na), digits = digits), nsmall = digits)
-    quant_025_075 <- format(round(stats::quantile(x, na.rm = remove_na, probs = c(0.25, 0.75)), digits = digits), nsmall = digits)
-    m_iqr <- glue::glue("{m} ({quant_025_075[1]}-{quant_025_075[2]})")
-    m <- quant_025_075 <- NULL
-    return(m_iqr)
+median_iqr <- function(x, remove_na = TRUE, digits = 1, ...) {
+  if (!is.numeric(x)) stop("x must be numeric")
+  m <- format(round(stats::median(x, na.rm = remove_na), digits = digits), nsmall = digits)
+  quant_025_075 <- format(round(stats::quantile(x, na.rm = remove_na, probs = c(0.25, 0.75)), digits = digits), nsmall = digits, ...)
+  m_iqr <- glue::glue("{m} ({quant_025_075[1]}-{quant_025_075[2]})")
+  m <- quant_025_075 <- NULL
+  return(m_iqr)
 }
 
 #' n_per
@@ -141,43 +143,43 @@ median_iqr <- function(x, remove_na = TRUE, digits = 1) {
 #' @export
 #'
 #' @examples
-#' n_per(c(rep(1,3), rep(0, 3)))
+#' n_per(c(rep(1, 3), rep(0, 3)))
 #'
 #' @returns A string of form count (%)
 n_per <- function(x, remove_na = FALSE) {
-    # Remove na or set them to false
-    if (is.numeric(x)) {
-        # TODO make sure it is binary
-        valid_values <- c(NA, 1, 0)
-        unique_values <- unique(x)
-        if (any(!unique_values %in% valid_values)) {
-            stop(glue::glue("This is not a binary variable. Contains: {pcollapse(unique_values)}"))
-        }
-        x <- x == 1
+  # Remove na or set them to false
+  if (is.numeric(x)) {
+    # TODO make sure it is binary
+    valid_values <- c(NA, 1, 0)
+    unique_values <- unique(x)
+    if (any(!unique_values %in% valid_values)) {
+      stop(glue::glue("This is not a binary variable. Contains: {pcollapse(unique_values)}"))
     }
+    x <- x == 1
+  }
 
-    if (!is.logical(x)) {
-        stop("x must be logical or binary numeric variable (1/0)")
-    }
+  if (!is.logical(x)) {
+    stop("x must be logical or binary numeric variable (1/0)")
+  }
 
-    # Handle NA
-    if (remove_na) {
-        print(glue::glue("removing missing from variable {scales::percent(mean(is.na(x)))}"))
-        x <- x[!is.na(x)]
-    } else {
-        # Set the missing to FALSE
-        x[is.na(x)] <- FALSE
-    }
+  # Handle NA
+  if (remove_na) {
+    print(glue::glue("removing missing from variable {scales::percent(mean(is.na(x)))}"))
+    x <- x[!is.na(x)]
+  } else {
+    # Set the missing to FALSE
+    x[is.na(x)] <- FALSE
+  }
 
-    # Calculate prop and n
-    count <- sum(x)
-    prop <- mean(x)
-    perc <- scales::percent(prop)
+  # Calculate prop and n
+  count <- sum(x)
+  prop <- mean(x)
+  perc <- scales::percent(prop)
 
-    res <- glue::glue("{count} ({perc})")
-    count <- perc <- NULL
+  res <- glue::glue("{count} ({perc})")
+  count <- perc <- NULL
 
-    return(res)
+  return(res)
 }
 #' roundn
 #'
@@ -190,7 +192,7 @@ n_per <- function(x, remove_na = FALSE) {
 #' roundn(1.100100010, dig = 3)
 #' @returns A rounded value of as string with the correct number of digits
 roundn <- function(x, dig = 2) {
-    format(round(x, digits = dig), nsmall = dig)
+  format(round(x, digits = dig), nsmall = dig)
 }
 #' x_ci
 #'
@@ -200,11 +202,11 @@ roundn <- function(x, dig = 2) {
 #' @param dig Number of digits to round to
 #'
 #' @examples
-#' x_ci(1.0101, 0.500, 1.353, dig = 2) 
+#' x_ci(1.0101, 0.500, 1.353, dig = 2)
 #'
 #' @returns A string for form x (cil-ciu)
 #'
 #' @export
 x_ci <- function(x, cil, ciu, dig = 1) {
-    paste0(roundn(x, dig), " (", roundn(cil, dig), "-", roundn(ciu, dig), ")")
+  paste0(roundn(x, dig), " (", roundn(cil, dig), "-", roundn(ciu, dig), ")")
 }
