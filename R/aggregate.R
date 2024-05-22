@@ -97,6 +97,7 @@ year_month <- function(date) {
 #' @param x Numeric vector
 #' @param remove_na Should NAs be removed?
 #' @param digits The number of decimal places to include
+#' @param big_mark = "," The mark to use for big numbers
 #' @param ... Additional arguments passed to format
 #'
 #' @export
@@ -105,10 +106,10 @@ year_month <- function(date) {
 #' mean_sd(1:10)
 #'
 #' @returns A string of form mean (sd)
-mean_sd <- function(x, remove_na = TRUE, digits = 1, ...) {
+mean_sd <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
   if (!is.numeric(x)) stop("x must be numeric")
-  m <- format(round(mean(x, na.rm = remove_na), digits = digits), nsmall = digits)
-  sdev <- format(round(stats::sd(x, na.rm = remove_na), digits = digits), nsmall = digits, ...)
+  m <- format(round(mean(x, na.rm = remove_na), digits = digits), nsmall = digits, big.mark = big_mark, ...)
+  sdev <- format(round(stats::sd(x, na.rm = remove_na), digits = digits), nsmall = digits, big.mark = big_mark, ...)
   m_sd <- glue::glue("{m} ({sdev})")
   m <- sddev <- NULL
   return(m_sd)
@@ -118,6 +119,7 @@ mean_sd <- function(x, remove_na = TRUE, digits = 1, ...) {
 #' @param x Numeric vector
 #' @param remove_na Should NAs be removed?
 #' @param digits The number of decimal places to include
+#' @param big_mark = "," The mark to use for big numbers
 #' @param ... Additional arguments passed to format
 #'
 #' @export
@@ -126,10 +128,10 @@ mean_sd <- function(x, remove_na = TRUE, digits = 1, ...) {
 #' median_iqr(1:10)
 #'
 #' @returns A string of form median (iqr)
-median_iqr <- function(x, remove_na = TRUE, digits = 1, ...) {
+median_iqr <- function(x, remove_na = TRUE, digits = 1, big_mark = ",", ...) {
   if (!is.numeric(x)) stop("x must be numeric")
-  m <- format(round(stats::median(x, na.rm = remove_na), digits = digits), nsmall = digits)
-  quant_025_075 <- format(round(stats::quantile(x, na.rm = remove_na, probs = c(0.25, 0.75)), digits = digits), nsmall = digits, ...)
+  m <- format(round(stats::median(x, na.rm = remove_na), digits = digits), nsmall = digits, big.mark = big_mark, ...)
+  quant_025_075 <- format(round(stats::quantile(x, na.rm = remove_na, probs = c(0.25, 0.75)), digits = digits), nsmall = digits, big.mark = big_mark, ...)
   m_iqr <- glue::glue("{m} ({quant_025_075[1]}-{quant_025_075[2]})")
   m <- quant_025_075 <- NULL
   return(m_iqr)
