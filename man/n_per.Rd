@@ -4,12 +4,14 @@
 \alias{n_per}
 \title{n_per}
 \usage{
-n_per(x, remove_na = FALSE)
+n_per(x, remove_na = FALSE, ...)
 }
 \arguments{
 \item{x}{Numeric or logical vector of form 1/0 or TRUE/FALSE}
 
 \item{remove_na}{Should NAs be removed?}
+
+\item{...}{Additional arguments passed to scales::percent}
 }
 \value{
 A string of form count (\%)

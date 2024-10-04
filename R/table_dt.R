@@ -16,6 +16,7 @@
 # ` Default to changing the color of every other row.
 #' @param width Width as proportion of parent div. Based on ncol bby default
 #' @param caption Table caption
+#' @param force_html, force html output, default = FALSE
 #' @param ... Additional variables to pass to datatable::DT
 #'
 #' @returns An html table
@@ -26,7 +27,7 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
                      row_groups = FALSE, alignment = "dt-center", align_targets = NULL, # nolint
                      page_length = 20, class = NULL, row_callback = NULL,
                      use_default_row_callback = FALSE,
-                     width = NULL, caption = NULL, format = "html", ...) { # nolint
+                     width = NULL, caption = NULL, force_html = FALSE, ...) { # nolint
 
 
   if ("TableOne" %in% class(data)) {
@@ -34,7 +35,7 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
   }
   if (
     !knitr::is_html_output() && !knitr::is_latex_output() &&
-      format != "html"
+      !force_html
   ) {
     return(print(tibble::as_tibble(data), n = 1000))
   }

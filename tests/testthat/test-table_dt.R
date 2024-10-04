@@ -1,7 +1,6 @@
 test_that("table_dt can handle stuff", {
-  skip("html output")
   x <- mtcars
-  table_dt(x, format = "html")
+  table_dt(x, force_html = TRUE)
   # tableone is such a pain
   t1 <- tableone::CreateTableOne(vars = "mpg", data = x)
   table_dt(t1)
