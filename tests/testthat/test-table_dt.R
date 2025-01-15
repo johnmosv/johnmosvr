@@ -11,3 +11,9 @@ test_that("can convert tableone", {
   converted <- convert_tableone(t1)
   expect_equal(rownames(converted), paste(1:2))
 })
+
+test_that("can generate an html table", {
+  x <- mtcars
+  html_table <- table_dt(x, force_html = TRUE, caption = "mtcars")
+  expect_equal(class(html_table), c("datatables", "htmlwidget"))
+})

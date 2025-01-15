@@ -129,6 +129,7 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
     editable = TRUE,
     fillContainer = FALSE,
     width = width,
+    caption = caption,
     options = list(
       dom = dom_settings,
       pageLength = page_length,

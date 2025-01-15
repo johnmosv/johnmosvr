@@ -9,7 +9,7 @@ convert_tableone(tabone, ...)
 \arguments{
 \item{tabone}{A \code{TableOne} object to be converted.}
 
-\item{...}{Additional arguments passed to the \code{print} function.}
+\item{...}{Additional arguments passed to the \code{print} function. See ?print.TableOne for options}
 }
 \value{
 A data frame representation of the \code{TableOne} object.
