@@ -1,6 +1,7 @@
 #' table_dt: Create nice looking datatable with sane defaults
 #'
 #' @param data Table to present
+#' @param caption Table caption
 #' @param col_names New column names to be used in table
 #' @param first_colname A character vector with new colnames
 #' @param title_row_names Should first row be formatted?
@@ -15,19 +16,18 @@
 #' @param use_default_row_callback, FALSE
 # ` Default to changing the color of every other row.
 #' @param width Width as proportion of parent div. Based on ncol bby default
-#' @param caption Table caption
 #' @param force_html, force html output, default = FALSE
 #' @param ... Additional variables to pass to datatable::DT
 #'
 #' @returns An html table
 #'
 #' @export
-table_dt <- function(data, col_names = NULL, first_colname = NULL,
+table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NULL,
                      title_row_names = FALSE, title_col_names = FALSE,
                      row_groups = FALSE, alignment = "dt-center", align_targets = NULL, # nolint
                      page_length = 20, class = NULL, row_callback = NULL,
                      use_default_row_callback = FALSE,
-                     width = NULL, caption = NULL, force_html = FALSE, ...) { # nolint
+                     width = NULL, force_html = FALSE, ...) { # nolint
 
 
   if ("TableOne" %in% class(data)) {
@@ -118,6 +118,7 @@ table_dt <- function(data, col_names = NULL, first_colname = NULL,
   if (!use_row_callback) {
     row_callback <- NULL
   }
+
 
   return_table <- DT::datatable(
     data,

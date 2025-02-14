@@ -14,7 +14,7 @@
 #' df <- convert_tableone(tabone)
 #' }
 convert_tableone <- function(tabone, ...) {
-  mtx <- print(tabone, printToggle = FALSE, ...)
+  mtx <- print(tabone, showAllLevels = TRUE, printToggle = FALSE, ...)
   df_rn <- data.frame(var = rownames(mtx))
   df <- as.data.frame.matrix(mtx)
   df <- bind_cols(df_rn, df)

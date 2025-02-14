@@ -6,6 +6,7 @@
 \usage{
 table_dt(
   data,
+  caption = NULL,
   col_names = NULL,
   first_colname = NULL,
   title_row_names = FALSE,
@@ -18,13 +19,13 @@ table_dt(
   row_callback = NULL,
   use_default_row_callback = FALSE,
   width = NULL,
-  caption = NULL,
   force_html = FALSE,
   ...
 )
 
 table_dt(
   data,
+  caption = NULL,
   col_names = NULL,
   first_colname = NULL,
   title_row_names = FALSE,
@@ -37,13 +38,14 @@ table_dt(
   row_callback = NULL,
   use_default_row_callback = FALSE,
   width = NULL,
-  caption = NULL,
   force_html = FALSE,
   ...
 )
 }
 \arguments{
 \item{data}{Table to present}
+
+\item{caption}{Table caption}
 
 \item{col_names}{New column names to be used in table}
 
@@ -68,8 +70,6 @@ table_dt(
 \item{use_default_row_callback, }{FALSE}
 
 \item{width}{Width as proportion of parent div. Based on ncol bby default}
-
-\item{caption}{Table caption}
 
 \item{force_html, }{force html output, default = FALSE}
 
