@@ -39,10 +39,16 @@ install_packages <- function(packages = NULL, quiet = FALSE) {
     "lubridate",
     "data.table",
     "purrr",
+    "gt",
+    "gtsummary",
+
+    # read stuff fast as hell
+    "fst"
 
     # tableone dependencies
     "survey",
     "tableone",
+
 
     # Stats stuff
     "emmeans", # requires openblas for linear algebra
