@@ -10,12 +10,6 @@
 #' @return Invisible character vector of newly installed packages
 #'
 #' @examples
-#' # Install default packages
-#' install_packages()
-#'
-#' # Install default packages plus additional ones
-#' install_packages(c("stringr", "purrr"))
-#'
 #' @export
 install_packages <- function(packages = NULL, quiet = FALSE) {
   # First, ensure crayon is installed for colored output
@@ -43,7 +37,7 @@ install_packages <- function(packages = NULL, quiet = FALSE) {
     "gtsummary",
 
     # read stuff fast as hell
-    "fst"
+    "fst",
 
     # tableone dependencies
     "survey",
@@ -117,7 +111,7 @@ install_packages <- function(packages = NULL, quiet = FALSE) {
   if (length(packages_to_install) > 0) {
     for (package in packages_to_install) {
       message(crayon::yellow(paste0("→ Installing ", package, "...")))
-      utils::install.packages(package, quiet = quiet)
+      utils::install.packages(package, quiet = quiet, repos = c(CRAN = "https://cloud.r-project.org"))
       success <- package %in% rownames(installed.packages())
       if (success) {
         message(crayon::green(paste0("✓ ", package, " has been successfully installed")))
