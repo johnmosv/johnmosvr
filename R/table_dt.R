@@ -45,7 +45,7 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
     return(knitr::kable(data, caption = caption, format = "latex"))
   }
   data <- dplyr::ungroup(data)
-  dom_settings <- "tB"
+  dom_settings <- "fBt"
 
   if (is.null(col_names)) {
     col_names <- colnames(data)
@@ -72,7 +72,7 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
   }
 
   if (page_length < nrow(data)) {
-    dom_settings <- "tBflp"
+    dom_settings <- "fBtlp"
   }
 
   if (is.null(width)) {
