@@ -45,7 +45,7 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
     return(knitr::kable(data, caption = caption, format = "latex"))
   }
   data <- dplyr::ungroup(data)
-  dom_settings <- "fBt"
+  dom_settings <- "ftB"
 
   if (is.null(col_names)) {
     col_names <- colnames(data)
@@ -72,7 +72,7 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
   }
 
   if (page_length < nrow(data)) {
-    dom_settings <- "fBtlp"
+    dom_settings <- "ftlpB"
   }
 
   if (is.null(width)) {
@@ -121,6 +121,10 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
     row_callback <- NULL
   }
 
+  # Format caption to appear at top and left-aligned
+  if (!is.null(caption)) {
+    caption <- htmltools::tags$caption(style = "caption-side: top; text-align: left;", caption)
+  }
 
   return_table <- DT::datatable(
     data,
@@ -157,6 +161,8 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
         #            "$('table.dataTable.no-footer').css('border-bottom', 'none');",
         "$('table.dataTable.no-footer').css('border-top', '2px solid black');",
         "$('table.dataTable.no-footer').css('border-bottom', '2px solid black');",
+        "$('.dt-buttons').css({'font-size': '0.8em', 'padding': '5px'});",
+        "$('.dt-button').css({'font-size': '0.8em', 'padding': '3px 8px'});",
         "}"
       )
     ),

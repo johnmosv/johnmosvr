@@ -32,7 +32,7 @@ test_that("can generate an html table", {
 test_that("can round to digits", {
   x <- mtcars
   x$yr <- 2001 # integer column
-  html_table <- table_dt(x, force_html = TRUE, digits = 1)
+  html_table <- table_dt(x, force_html = TRUE, digits = 1, caption = "at the top")
   html_table
   yr_column <- html_table$x$data$yr
   expect_true(all(yr_column == round(yr_column, 0)))
