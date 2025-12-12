@@ -165,7 +165,12 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
   return_table <- DT::formatStyle(return_table, columns = 1, color = "black", fontWeight = "bold") # nolint
 
   if (!is.null(digits)) {
-    num_cols <- sapply(data, is.numeric)
+    # Only round numeric columns that contain non-integer values
+    num_cols <- sapply(data, function(x) {
+      if (!is.numeric(x)) return(FALSE)
+      # Check if any values are not whole numbers (ignoring NAs)
+      any(!is.na(x) & (x != floor(x)))
+    })
     for (col in which(num_cols)) {
       return_table <- DT::formatRound(return_table, col, digits = digits)
     }
