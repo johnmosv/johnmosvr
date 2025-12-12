@@ -10,6 +10,7 @@
 #' @param alignment Alignment of cells c("dt-center", "dt-right", "dt-left")
 #' @param align_targets Numeric vector containing columns positions to
 # ` apply alignment to
+#' @param digits Number of digits to round numeric values to, default: NUL
 #' @param page_length Number of rows per page
 #' @param class Classes to apply. Defaults to "compact stripe"
 #' @param row_callback Row callback to apply.
@@ -25,6 +26,7 @@
 table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NULL,
                      title_row_names = FALSE, title_col_names = FALSE,
                      row_groups = FALSE, alignment = "dt-center", align_targets = NULL, # nolint
+                     digits = NULL,
                      page_length = 20, class = NULL, row_callback = NULL,
                      use_default_row_callback = FALSE,
                      width = NULL, force_html = FALSE, ...) { # nolint
@@ -161,6 +163,13 @@ table_dt <- function(data, caption = NULL, col_names = NULL, first_colname = NUL
     ...
   )
   return_table <- DT::formatStyle(return_table, columns = 1, color = "black", fontWeight = "bold") # nolint
+
+  if (!is.null(digits)) {
+    num_cols <- sapply(data, is.numeric)
+    for (col in which(num_cols)) {
+      return_table <- DT::formatRound(return_table, col, digits = digits)
+    }
+  }
 
   if ("percent" %in% colnames(data)) {
     return_table <- DT::formatPercentage(return_table, "percent")

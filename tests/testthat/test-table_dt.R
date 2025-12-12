@@ -29,6 +29,13 @@ test_that("can generate an html table", {
     table_dt(force_html = TRUE)
 })
 
+test_that("can round to digits", {
+  x <- mtcars
+  html_table <- table_dt(x, force_html = TRUE, digits = 0)
+  html_table
+  expect_equal(class(html_table), c("datatables", "htmlwidget"))
+})
+
 
 test_that("can prepare dt data", {
   skip("just testing convertion for DT")
